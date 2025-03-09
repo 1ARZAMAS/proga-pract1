@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fire_safety_system',
 ]
 
 MIDDLEWARE = [
@@ -107,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'fire_safety_system.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

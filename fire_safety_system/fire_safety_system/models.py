@@ -5,14 +5,16 @@ import uuid
 # Модель пользователя
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # UUID в качестве первичного ключа
+    email = models.EmailField(unique=True, blank=False, null=False)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    
     owned_detectors = models.ManyToManyField('Detector', blank=True, related_name='owners')
 
-    class Meta:
-        app_label = 'fire_safety_system'  # Указываем app_label
+    #class Meta:
+    #    app_label = 'fire_safety_system'  # Указываем app_label
 
-    def __str__(self):
-        return self.username
+    #def __str__(self):
+    #    return self.username
 
 # Модель датчика
 class Detector(models.Model):
