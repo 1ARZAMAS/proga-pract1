@@ -8,4 +8,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', logout_view, name='logout'),  # Перенаправление на 'home' после выхода
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('add_detector/', views.add_detector, name='add_detector'),
+    path('toggle_detector/<int:detector_id>/', views.toggle_detector, name='toggle_detector'),
 ]

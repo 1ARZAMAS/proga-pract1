@@ -6,6 +6,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 import logging
+from django.shortcuts import render, redirect
+from .forms import DetectorForm
+from .models import Detector
 
 logger = logging.getLogger(__name__)
 
@@ -79,9 +82,25 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    user = request.user
-    detectors = request.user.owned_detectors.all()
-    return render(request, 'dashboard.html', {
-        'user': user,
-        'detectors': detectors
-    })
+    detectors = request.user.owned_detectors.all()  # Получаем датчики текущего пользователя
+    return render(request, 'dashboard.html', {'detectors': detectors})
+
+@login_required
+def add_detector(request):
+    if request.method == 'POST':
+        form = DetectorForm(request.POST)
+        if form.is_valid():
+            detector = form.save()  # Создаём датчик
+            request.user.owned_detectors.add(detector)  # Привязываем датчик к текущему пользователю
+            return redirect('dashboard')
+    else:
+        form = DetectorForm()
+    return render(request, 'add_detector.html', {'form': form})
+
+@login_required
+def toggle_detector(request, detector_id):
+    detector = get_object_or_404(Detector, id=detector_id)
+    if request.user in detector.owners.all():  # Проверяем, что пользователь владеет датчиком
+        detector.status = 'inactive' if detector.status == 'active' else 'active'
+        detector.save()
+    return redirect('dashboard')

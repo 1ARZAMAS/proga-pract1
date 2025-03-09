@@ -10,12 +10,6 @@ class User(AbstractUser):
     
     owned_detectors = models.ManyToManyField('Detector', blank=True, related_name='owners')
 
-    #class Meta:
-    #    app_label = 'fire_safety_system'  # Указываем app_label
-
-    #def __str__(self):
-    #    return self.username
-
 # Модель датчика
 class Detector(models.Model):
     detector_id = models.CharField(max_length=100, unique=True) # Уникальный идентификатор датчика
